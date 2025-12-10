@@ -1,0 +1,469 @@
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #0f172a;
+  background-color: #0f172a;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.app {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #1e293b 0, #020617 50%, #020617 100%);
+  color: #e5e7eb;
+}
+
+/* NAVBAR */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 4vw;
+  backdrop-filter: blur(12px);
+  background: linear-gradient(to bottom, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.6));
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #22c55e, #3b82f6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.logo-text {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: #e5e7eb;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navbar-links a {
+  font-size: 0.9rem;
+  color: #cbd5f5;
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.navbar-links a:hover {
+  opacity: 1;
+}
+
+.navbar-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-btn {
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  background: transparent;
+  color: #e5e7eb;
+}
+
+.nav-btn-outline {
+  border-color: rgba(148, 163, 184, 0.6);
+}
+
+.nav-btn-outline:hover {
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.nav-btn-primary {
+  background: linear-gradient(135deg, #22c55e, #3b82f6);
+  border-color: transparent;
+  color: #020617;
+  font-weight: 600;
+}
+
+.nav-btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+/* HERO */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2.5fr);
+  gap: 3rem;
+  padding: 3rem 4vw 2rem;
+  align-items: center;
+}
+
+.hero-content {
+  max-width: 540px;
+}
+
+.hero-title {
+  font-size: clamp(2.4rem, 4vw + 1rem, 3.4rem);
+  line-height: 1.05;
+  margin: 0 0 1rem;
+}
+
+.hero-title span {
+  background: linear-gradient(135deg, #22c55e, #3b82f6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-subtitle {
+  color: #9ca3af;
+  margin-bottom: 1.5rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.btn-primary,
+.btn-secondary {
+  border-radius: 999px;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #22c55e, #3b82f6);
+  color: #020617;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #e5e7eb;
+  border-color: rgba(148, 163, 184, 0.6);
+}
+
+.btn-secondary:hover {
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.hero-note {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+/* HERO IMAGE CARD */
+
+.hero-image {
+  display: flex;
+  justify-content: center;
+}
+
+.hero-sneaker-card {
+  background: radial-gradient(circle at top, #1f2937 0, #020617 70%);
+  border-radius: 24px;
+  padding: 1.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  box-shadow: 0 25px 60px rgba(15, 23, 42, 0.75);
+  max-width: 320px;
+  width: 100%;
+}
+
+.hero-sneaker-photo {
+  border-radius: 18px;
+  background: radial-gradient(circle at top left, #22c55e33, #020617 60%);
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sneaker-emoji {
+  font-size: 4rem;
+}
+
+.hero-sneaker-info {
+  margin-top: 1rem;
+}
+
+.hero-sneaker-info h3 {
+  margin: 0 0 0.25rem;
+}
+
+.hero-sneaker-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+.hero-price {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-weight: 700;
+}
+
+/* SECTION */
+
+.section {
+  padding: 1rem 4vw 3rem;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  margin-bottom: 0.25rem;
+}
+
+.section-subtitle {
+  font-size: 0.9rem;
+  color: #9ca3af;
+  max-width: 520px;
+}
+
+/* PRODUCTS */
+
+.product-grid {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.product-card {
+  position: relative;
+  background: rgba(15, 23, 42, 0.8);
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.product-tag {
+  position: absolute;
+  top: 0.8rem;
+  left: 0.8rem;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(52, 211, 153, 0.12);
+  border: 1px solid rgba(52, 211, 153, 0.7);
+  color: #bbf7d0;
+}
+
+.product-image {
+  height: 120px;
+  border-radius: 12px;
+  background: radial-gradient(circle at top left, #3b82f633, #020617 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.2rem;
+}
+
+.product-emoji {
+  font-size: 2.5rem;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.product-name {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.product-brand {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.product-colorway {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #e5e7eb;
+}
+
+.product-footer {
+  margin-top: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.product-price {
+  font-weight: 700;
+}
+
+.product-btn {
+  font-size: 0.8rem;
+  border-radius: 999px;
+  padding: 0.35rem 0.8rem;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #22c55e, #3b82f6);
+  color: #020617;
+  font-weight: 600;
+}
+
+/* FOOTER */
+
+.footer {
+  border-top: 1px solid rgba(148, 163, 184, 0.3);
+  padding: 1.5rem 4vw 2rem;
+  text-align: center;
+  background: radial-gradient(circle at bottom, #111827 0, #020617 70%);
+}
+
+.footer-title {
+  font-weight: 700;
+}
+
+.footer-text {
+  font-size: 0.9rem;
+  color: #9ca3af;
+  max-width: 600px;
+  margin: 0.5rem auto 0.7rem;
+}
+
+.footer-small {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    padding-top: 2.5rem;
+  }
+
+  .hero-image {
+    order: -1;
+  }
+
+  .navbar-links {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    padding-inline: 1rem;
+  }
+
+  .hero,
+  .section,
+  .footer {
+    padding-inline: 1.2rem;
+  }
+}
+.nav-user {
+  font-size: 0.8rem;
+  color: #cbd5f5;
+  margin-right: 0.6rem;
+}
+.login-card {
+  max-width: 400px;
+  margin: 0 auto 2rem;
+  padding: 1.5rem;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.8);
+}
+
+.login-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.login-header h2 {
+  margin: 0;
+}
+
+.login-close {
+  border: none;
+  background: transparent;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.login-field input {
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  padding: 0.5rem 0.9rem;
+  background: rgba(15, 23, 42, 0.8);
+  color: #e5e7eb;
+  outline: none;
+}
+
+.login-field input:focus {
+  border-color: #3b82f6;
+}
+
+.login-error {
+  color: #f97373;
+  font-size: 0.8rem;
+}
+
+.login-submit {
+  width: 100%;
+  margin-top: 0.5rem;
+}
