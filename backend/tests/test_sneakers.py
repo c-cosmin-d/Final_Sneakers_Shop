@@ -6,7 +6,7 @@ from app import models
 
 def make_sneaker_payload(
     *,
-    name: str = 1,
+    name: str = "Air Max 90",
     brand: str = "Nike",
     price: float = 120.0,
     colorway: str | None = "White/Red",
