@@ -10,8 +10,8 @@ from .database import engine
 from .routers import auth, sneakers, cart
 
 # Create DB tables
-models.Base.metadata.create_all(bind=engine)
-
+if os.getenv("DISABLE_AUTO_CREATE_DB") != "1":
+    models.Base.metadata.create_all(bind=engine)
 app = FastAPI(title="Sneaker Shop API")
 
 
