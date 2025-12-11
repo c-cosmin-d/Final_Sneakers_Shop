@@ -1,7 +1,7 @@
 # backend/tests/test_sneakers.py
 from sqlalchemy.orm import Session
 
-from app import models
+from backend.app import models
 
 
 def make_sneaker_payload(

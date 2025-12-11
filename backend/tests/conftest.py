@@ -13,8 +13,8 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from app.main import app
-from app.database import Base, get_db
+from backend.app import main
+from backend.app import database
 
 # ---- Test database (SQLite file) ----
 SQLALCHEMY_TEST_DB_URL = "sqlite:///./test_sneaker_shop.db"
@@ -30,8 +30,8 @@ TestingSessionLocal = sessionmaker(
 )
 
 # Drop and recreate tables on the test DB
-Base.metadata.drop_all(bind=engine)
-Base.metadata.create_all(bind=engine)
+database.Base.metadata.drop_all(bind=engine)
+database.Base.metadata.create_all(bind=engine)
 
 
 def override_get_db():
@@ -43,13 +43,13 @@ def override_get_db():
 
 
 # Override the real DB dependency with the test one
-app.dependency_overrides[get_db] = override_get_db
+main.app.dependency_overrides[database.get_db] = override_get_db
 
 
 @pytest.fixture
 def client() -> TestClient:
     """FastAPI TestClient using the SQLite test database."""
-    return TestClient(app)
+    return TestClient(main.app)
 
 
 @pytest.fixture
