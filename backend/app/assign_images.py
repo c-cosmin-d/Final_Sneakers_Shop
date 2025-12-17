@@ -8,7 +8,6 @@ from . import models
 # relative to this file -> backend/app/static/sneakers
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SNEAKERS_DIR = os.path.join(BASE_DIR, "static", "sneakers")
-
 # URL prefix used in the database (must match what FastAPI serves)
 URL_PREFIX = "/static/sneakers"
 

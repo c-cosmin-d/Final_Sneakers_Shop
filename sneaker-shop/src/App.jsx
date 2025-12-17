@@ -10,6 +10,9 @@ import { getCurrentUser } from "./api";
 import WomenPage from "./pages/WomenPage";
 import MenPage from "./pages/MenPage";
 import SneakerDetailsPage from "./pages/SneakerDetailsPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import CardPaymentPage from "./pages/CardPaymentPage";
+import MyOrdersPage from "./pages/MyOrdersPage";
 
 function App() {
   const [loggedInEmail, setLoggedInEmail] = useState("");
@@ -70,6 +73,10 @@ function App() {
         <Route path="/women" element={<WomenPage />} />
         <Route path="/men" element={<MenPage />} />
         <Route path="/sneakers/:id" element={<SneakerDetailsPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/checkout/card" element={<CardPaymentPage />} />
+        <Route path="/my-orders" element={<MyOrdersPage />} />
+
       </Routes>
 
       <Footer />

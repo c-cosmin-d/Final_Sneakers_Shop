@@ -7,7 +7,8 @@ import os
 
 from . import models
 from .database import engine
-from .routers import auth, sneakers, cart
+from .routers import auth, sneakers, cart,orders
+
 
 # Create DB tables
 if os.getenv("DISABLE_AUTO_CREATE_DB") != "1":
@@ -30,7 +31,6 @@ app.add_middleware(
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 
-
 app.mount(
     "/static",
     StaticFiles(directory=STATIC_DIR),
@@ -41,7 +41,7 @@ app.mount(
 app.include_router(auth.router)
 app.include_router(sneakers.router)
 app.include_router(cart.router)
-
+app.include_router(orders.router)
 
 @app.get("/")
 def read_root():

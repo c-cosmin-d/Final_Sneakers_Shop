@@ -1,4 +1,6 @@
+// sneaker-shop/src/pages/CartPage.jsx
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getCart, updateCartItem, deleteCartItem } from "../api";
 
 const BACKEND_BASE_URL = "http://localhost:8000";
@@ -24,8 +26,10 @@ function CartPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const navigate = useNavigate();
   const token = localStorage.getItem("access_token");
 
+  // ---------- load cart ----------
   useEffect(() => {
     async function loadCart() {
       if (!token) {
@@ -52,17 +56,30 @@ function CartPage() {
     );
   }
 
+  // ---------- quantity change ----------
   async function handleQuantityChange(itemId, newQty) {
-    if (newQty <= 0) {
-      await deleteCartItem(token, itemId);
-      setItems((prev) => prev.filter((i) => i.id !== itemId));
-      return;
+    if (!token) return;
+
+    try {
+      if (newQty <= 0) {
+        // remove item
+        await deleteCartItem(token, itemId);
+        setItems((prev) => prev.filter((i) => i.id !== itemId));
+        return;
+      }
+
+      const updated = await updateCartItem(token, itemId, newQty);
+      if (!updated) return;
+
+      setItems((prev) => prev.map((i) => (i.id === itemId ? updated : i)));
+    } catch (err) {
+      console.error(err);
+      // if backend sends "Only X items left..." we want to show it
+      alert(err.message || "Could not update quantity.");
     }
-    const updated = await updateCartItem(token, itemId, newQty);
-    if (!updated) return;
-    setItems((prev) => prev.map((i) => (i.id === itemId ? updated : i)));
   }
 
+  // ---------- UI ----------
   if (loading) {
     return (
       <main className="section">
@@ -164,6 +181,8 @@ function CartPage() {
                   >
                     {s.name}
                   </h3>
+
+                  {/* brand + size */}
                   <p
                     className="cart-item-brand"
                     style={{
@@ -172,8 +191,9 @@ function CartPage() {
                       marginBottom: "0.35rem",
                     }}
                   >
-                    {s.brand}
+                    {s.brand} — EU {item.size}
                   </p>
+
                   <p
                     className="cart-item-price"
                     style={{
@@ -251,12 +271,30 @@ function CartPage() {
             })}
           </div>
 
+          {/* total + checkout */}
           <div
             className="cart-total"
-            style={{ marginTop: "2rem", fontSize: "1.1rem" }}
+            style={{
+              marginTop: "2rem",
+              fontSize: "1.1rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              maxWidth: "600px",
+            }}
           >
-            <span>Total:</span>{" "}
-            <strong>${calcTotal().toFixed(2)}</strong>
+            <div>
+              <span>Total:</span>{" "}
+              <strong>${calcTotal().toFixed(2)}</strong>
+            </div>
+
+            <button
+              type="button"
+              className="btn-primary"
+              onClick={() => navigate("/checkout")}
+            >
+              Checkout
+            </button>
           </div>
         </>
       )}

@@ -65,6 +65,18 @@ function Navbar({ loggedInEmail, onLogout }) {
         >
           Cart
         </button>
+
+
+        {/* NEW: My orders button – only when logged in */}
+        {loggedInEmail && (
+          <button
+            className="nav-orders-btn"
+            onClick={() => navigate("/my-orders")}
+            style={{ marginLeft: "0.75rem" }}
+          >
+            My orders
+          </button>
+        )}
       </div>
     </header>
   );

@@ -1,11 +1,9 @@
 # app/routers/auth.py
 from datetime import timedelta
 from typing import Annotated
-
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-
 from .. import models, schemas
 from ..database import get_db
 from ..security import (
@@ -39,10 +37,10 @@ def authenticate_user(db: Session, email: str, password: str) -> models.User | N
     return user
 
 
-async def get_current_user(
+def get_current_user(
     token: Annotated[str, Depends(oauth2_scheme)],
-    db: Session = Depends(get_db),          # 👈 FIXED
-) -> models.User:
+    db: Session = Depends(get_db),
+    ) -> models.User:
     token_data = decode_token(token)
     if token_data is None or token_data.sub is None:
         raise HTTPException(
@@ -66,7 +64,7 @@ async def get_current_user(
 @router.post("/register", response_model=schemas.UserRead, status_code=201)
 def register_user(
     user: schemas.UserCreate,
-    db: Session = Depends(get_db),          # 👈 FIXED
+    db: Session = Depends(get_db),
 ):
     existing = get_user_by_email(db, user.email)
     if existing:

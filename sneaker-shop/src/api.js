@@ -1,6 +1,6 @@
 // src/api.js
 const API_BASE = "http://localhost:8000";
-
+export const BACKEND_BASE_URL = "http://localhost:8000";
 // Login: sends email + password to /auth/login and returns { access_token, token_type }
 export async function login(email, password) {
   const form = new URLSearchParams();
@@ -82,32 +82,28 @@ export async function getCart(token) {
   return res.json(); // [{ id, quantity, sneaker: {...} }]
 }
 
-export async function addToCart(token, sneakerId, quantity = 1) {
-  const res = await fetch(`${API_BASE}/cart/`, {
+export async function addToCart(token, sneakerId, quantity, size) {
+  const res = await fetch(`${BACKEND_BASE_URL}/cart/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ sneaker_id: sneakerId, quantity }),
+    body: JSON.stringify({
+      sneaker_id: sneakerId,
+      quantity,
+      size,
+    }),
   });
 
   if (!res.ok) {
-    // 👇 DEBUG LOGGING
-    let msg = `Could not add to cart (status ${res.status})`;
-    try {
-      const data = await res.json();
-      console.error("Add to cart error:", res.status, data);
-      if (data.detail) msg = data.detail;
-    } catch (e) {
-      console.error("Add to cart error, no JSON:", res.status);
-    }
+    const data = await res.json().catch(() => ({}));
+    const msg = data.detail || "Could not add to cart.";
     throw new Error(msg);
   }
 
   return res.json();
 }
-
 export async function updateCartItem(token, itemId, quantity) {
   const res = await fetch(`${API_BASE}/cart/${itemId}`, {
     method: "PATCH",
@@ -134,5 +130,53 @@ export async function deleteCartItem(token, itemId) {
     },
   });
 }
+export async function clearCartAfterCheckout(token) {
+  const res = await fetch(`${API_BASE}/cart/clear-after-checkout/all`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok && res.status !== 204) {
+    throw new Error("Failed to clear cart after checkout");
+  }
+
+  return true;
+}
+
+export async function createOrder(token) {
+  const res = await fetch(`${API_BASE}/orders/checkout`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to create order");
+  }
+
+  return res.json();
+}
+
+
+export async function getMyOrders(token) {
+  const res = await fetch(`${API_BASE}/orders/`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Could not load orders");
+  }
+
+  return res.json(); // adapt to whatever your backend returns
+}
+
+
+
+
 
 

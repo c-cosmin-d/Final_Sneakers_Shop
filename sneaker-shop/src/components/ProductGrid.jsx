@@ -150,7 +150,7 @@ function ProductGrid({ gender }) {
                   className="product-btn"
                   onClick={(e) => {
                     e.stopPropagation(); // don’t trigger navigation when clicking button
-                    handleAddToCart(shoe.id);
+                    navigate(`/sneakers/${shoe.id}`);
                   }}
                 >
                   Add to cart

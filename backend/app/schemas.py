@@ -1,5 +1,20 @@
 # app/schemas.py
 from pydantic import BaseModel,EmailStr,ConfigDict
+from datetime import datetime
+from typing import List
+
+
+class SneakerSizeBase(BaseModel):
+    eu_size: int
+    stock: int
+
+class SneakerSizeCreate(SneakerSizeBase):
+    pass
+
+class SneakerSizeRead(SneakerSizeBase):
+    id: int
+    model_config = ConfigDict(from_attributes=True)
+
 
 class CartItemSneaker(BaseModel):
     id: int
@@ -17,6 +32,7 @@ class CartItemSneaker(BaseModel):
 class CartItemRead(BaseModel):
     id: int
     quantity: int
+    size: int
     sneaker: CartItemSneaker
     image_url: str | None = None
     gender: str | None = None
@@ -39,6 +55,7 @@ class SneakerCreate(SneakerBase):
 
 class SneakerRead(SneakerBase):
     id: int
+    sizes: list[SneakerSizeRead] = []  # NEW: include size/stock info
 
     class Config:
         orm_mode = True
@@ -46,6 +63,7 @@ class SneakerRead(SneakerBase):
 class CartItemBase(BaseModel):
     sneaker_id: int
     quantity: int = 1
+    size: int
     image_url: str | None = None
     gender: str | None = None
     description: str | None = None
@@ -65,7 +83,6 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str
-
 
 class UserRead(UserBase):
     id: int
@@ -87,3 +104,24 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     sub: str | None = None  # email
+
+class OrderItemRead(BaseModel):
+    id: int
+    sneaker_id: int
+    size: int
+    quantity: int
+    price: float
+    sneaker: CartItemSneaker  # reuse your sneaker schema
+
+    class Config:
+        orm_mode = True
+
+class OrderRead(BaseModel):
+    id: int
+    total: float
+    created_at: datetime
+    items: List[OrderItemRead]
+
+    class Config:
+        orm_mode = True
+
