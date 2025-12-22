@@ -129,7 +129,7 @@ const genderLabel = isWomen ? "Women" : isMen ? "Men" : "Unisex";
         <div className="product-info">
           <h1 className="product-title">{sneaker.name}</h1>
           <p className="product-brand">{sneaker.brand}</p>
-          <p className="product-price">${sneaker.price.toFixed(2)}</p>
+          <p className="product-price">{sneaker.price.toFixed(2)} RON</p>
 
           {sneaker.colorway && (
             <p className="product-meta">

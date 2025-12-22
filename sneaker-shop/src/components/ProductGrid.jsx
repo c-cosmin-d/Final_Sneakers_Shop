@@ -144,7 +144,7 @@ function ProductGrid({ gender }) {
 
               <div className="product-footer">
                 <span className="product-price">
-                  ${shoe.price.toFixed(2)}
+                  {shoe.price.toFixed(2)} RON
                 </span>
                 <button
                   className="product-btn"

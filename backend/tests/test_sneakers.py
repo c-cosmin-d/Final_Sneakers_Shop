@@ -1,6 +1,7 @@
 # backend/tests/test_sneakers.py
 from sqlalchemy.orm import Session
 
+# from app import models
 from backend.app import models
 
 
@@ -29,12 +30,69 @@ def make_sneaker_payload(
         "description": description,
     }
 
+def create_sneaker_with_size(
+    db_session,
+    *,
+    name: str = "Sneaker With Size",
+    brand: str = "Nike",
+    price: float = 150.0,
+    eu_size: int = 42,
+    stock: int = 10,
+    gender: str = "men",
+):
+    sneaker = models.Sneaker(
+        name=name,
+        brand=brand,
+        price=price,
+        colorway="Black/Red",
+        tag="test",
+        image_url="http://example.com/test.jpg",
+        gender=gender,
+        description="Test sneaker with size",
+    )
+    db_session.add(sneaker)
+    db_session.commit()
+    db_session.refresh(sneaker)
+
+    size_row = models.SneakerSize(
+        sneaker_id=sneaker.id,
+        eu_size=eu_size,
+        stock=stock,
+    )
+    db_session.add(size_row)
+    db_session.commit()
+    db_session.refresh(size_row)
+
+    return sneaker, size_row
+
 
 def test_list_sneakers_empty_initially(client):
     response = client.get("/sneakers/")
     assert response.status_code == 200
     assert response.json() == []
 
+def test_create_sneaker_validation_error(client):
+    # price is missing -> Pydantic validation should fail -> 422
+    payload = {
+        "name": "Invalid Sneaker",
+        "brand": "Nike",
+        # "price" is omitted on purpose
+    }
+    response = client.post("/sneakers/", json=payload)
+    assert response.status_code == 422
+
+def test_sneaker_read_includes_sizes(client, db_session):
+    sneaker, _ = create_sneaker_with_size(db_session, eu_size=43, stock=7)
+
+    resp = client.get(f"/sneakers/{sneaker.id}")
+    assert resp.status_code == 200
+
+    data = resp.json()
+    assert data["id"] == sneaker.id
+    assert "sizes" in data
+    assert len(data["sizes"]) == 1
+    assert data["sizes"][0]["eu_size"] == 43
+    assert data["sizes"][0]["stock"] == 7
 
 def test_create_sneaker(client):
     payload = make_sneaker_payload()

@@ -13,9 +13,14 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from backend.app import main
+from backend.app import main,models
 from backend.app import database
+from backend.app.routers.auth import get_current_user
 
+# from app.main import app
+# from app.database import Base, get_db
+# from app import models
+# from app.routers.auth import get_current_user
 # ---- Test database (SQLite file) ----
 SQLALCHEMY_TEST_DB_URL = "sqlite:///./test_sneaker_shop.db"
 
@@ -30,9 +35,10 @@ TestingSessionLocal = sessionmaker(
 )
 
 # Drop and recreate tables on the test DB
+# database.Base.metadata.drop_all(bind=engine)
+# database.Base.metadata.create_all(bind=engine)
 database.Base.metadata.drop_all(bind=engine)
 database.Base.metadata.create_all(bind=engine)
-
 
 def override_get_db():
     db = TestingSessionLocal()
@@ -40,15 +46,37 @@ def override_get_db():
         yield db
     finally:
         db.close()
+def override_get_current_user():
+    db = TestingSessionLocal()
+    try:
+        user = db.query(models.User).filter(models.User.email == "test@example.com").first()
+        if not user:
+            user = models.User(
+                email="test@example.com",
+                hashed_password="fake-hash",
+                full_name="Test User",
+                is_active=True,
+            )
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+
+        # detach the instance so it can be safely used outside this session
+        db.expunge(user)
+    finally:
+        db.close()
+
+    return user
 
 
-# Override the real DB dependency with the test one
+# Override the real dependencies with the test ones
 main.app.dependency_overrides[database.get_db] = override_get_db
-
+main.app.dependency_overrides[get_current_user] = override_get_current_user
 
 @pytest.fixture
 def client() -> TestClient:
     """FastAPI TestClient using the SQLite test database."""
+    # return TestClient(main.app)
     return TestClient(main.app)
 
 
